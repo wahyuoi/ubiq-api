@@ -28,6 +28,7 @@ public class UserResource {
     @UnitOfWork
     @Path("/register")
     public Response doRegister(User user){
-        return Response.ok(user).build();
+        user = userDAO.upsert(user);
+        return Response.status(Response.Status.CREATED).entity(user).build();
     }
 }
