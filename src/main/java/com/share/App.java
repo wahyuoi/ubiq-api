@@ -1,5 +1,6 @@
 package com.share;
 
+import com.share.core.Uploaded;
 import com.share.core.User;
 import com.share.resources.*;
 import io.dropwizard.Application;
@@ -28,7 +29,7 @@ public class App extends Application<AppConfiguration>
     }
 
     private final HibernateBundle<AppConfiguration> hibernate = new HibernateBundle<AppConfiguration>(
-            User.class) {
+            User.class, Uploaded.class) {
         @Override
         public DataSourceFactory getDataSourceFactory(AppConfiguration appConfiguration) {
             return appConfiguration.getDataSourceFactory();
@@ -55,7 +56,7 @@ public class App extends Application<AppConfiguration>
         SessionFactory hibernateSessionFactory = hibernate.getSessionFactory();
 
         // add resource to env
-        environment.jersey().register(new UploadResource(hibernateSessionFactory));
+        environment.jersey().register(new UploadResource(hibernateSessionFactory, appConfiguration.getImagePath()));
         environment.jersey().register(new UserResource(hibernateSessionFactory));
     }
 }

@@ -12,3 +12,5 @@ allowedGrantTypes:
 
 bearerRealm: oauth2-provider
 
+imagePath: /home/wahyuoi/temp2
+

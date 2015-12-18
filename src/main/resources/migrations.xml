@@ -11,4 +11,34 @@
             <column name="lat" type="double"/>
         </createTable>
     </changeSet>
+    <changeSet id="2" author="wahyuoi">
+        <createTable tableName="image">
+            <column name="id" autoIncrement="true" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="id_user" type="INT">
+                <constraints foreignKeyName="fk_id_user" referencedTableName="user" referencedColumnNames="id"/>
+            </column>
+            <column name="path" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="wahyuoi">
+        <addNotNullConstraint tableName="image" columnName="id_user" columnDataType="INT"/>
+        <addNotNullConstraint tableName="image" columnName="path" columnDataType="varchar(255)"/>
+    </changeSet>
+    <changeSet id="4" author="wahyuoi">
+        <addColumn tableName="user">
+            <column name="device_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addColumn tableName="image">
+            <column name="device_id" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="5" author="wahyuoi">
+        <dropColumn tableName="image" columnName="device_id" />
+    </changeSet>
 </databaseChangeLog>

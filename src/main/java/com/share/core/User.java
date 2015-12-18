@@ -3,6 +3,8 @@ package com.share.core;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wahyuoi on 12/17/15.
@@ -25,6 +27,11 @@ public class User {
     @JsonProperty
     @Column(name = "lat")
     Double lat;
+    @JsonProperty
+    @Column(name = "device_id")
+    String deviceId;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    List<Uploaded> uploadedList = new ArrayList<>(0);
 
     public User() {
     }
@@ -67,5 +74,21 @@ public class User {
 
     public void setLat(Double lat) {
         this.lat = lat;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public List<Uploaded> getUploadedList() {
+        return uploadedList;
+    }
+
+    public void setUploadedList(List<Uploaded> uploadedList) {
+        this.uploadedList = uploadedList;
     }
 }

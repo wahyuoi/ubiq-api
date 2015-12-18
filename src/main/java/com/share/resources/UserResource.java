@@ -6,6 +6,7 @@ import com.share.dao.UserDAO;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.hibernate.SessionFactory;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

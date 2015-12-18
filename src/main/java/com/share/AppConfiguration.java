@@ -32,4 +32,10 @@ public class AppConfiguration extends Configuration {
     public String getBearerRealm(){
         return bearerRealm;
     }
+
+    @JsonProperty
+    private String imagePath;
+    public String getImagePath(){
+        return imagePath;
+    }
 }
