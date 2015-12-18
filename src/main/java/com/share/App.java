@@ -56,7 +56,7 @@ public class App extends Application<AppConfiguration>
         SessionFactory hibernateSessionFactory = hibernate.getSessionFactory();
 
         // add resource to env
-        environment.jersey().register(new UploadResource(hibernateSessionFactory, appConfiguration.getImagePath()));
+        environment.jersey().register(new UploadResource(hibernateSessionFactory, appConfiguration.getImagePath(), appConfiguration.getImageUrl()));
         environment.jersey().register(new UserResource(hibernateSessionFactory));
     }
 }

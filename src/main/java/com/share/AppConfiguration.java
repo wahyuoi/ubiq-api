@@ -38,4 +38,10 @@ public class AppConfiguration extends Configuration {
     public String getImagePath(){
         return imagePath;
     }
+
+    @JsonProperty
+    private String imageUrl;
+    public String getImageUrl(){
+        return imageUrl;
+    }
 }

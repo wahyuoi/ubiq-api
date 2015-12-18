@@ -27,10 +27,12 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class UploadResource {
     private final String imagePath;
+    private final String imageUrl;
     private final UserDAO userDAO;
     private final UploadDAO uploadDAO;
-    public UploadResource(SessionFactory sessionFactory, String imagePath) {
+    public UploadResource(SessionFactory sessionFactory, String imagePath, String imageUrl) {
         this.imagePath = imagePath;
+        this.imageUrl = imageUrl;
         userDAO = new UserDAO(sessionFactory);
         uploadDAO = new UploadDAO(sessionFactory);
     }
@@ -40,12 +42,12 @@ public class UploadResource {
     @Timed
     public Response doUpload(Image image){
         try {
-            String path = Base64.convert(image.getBase64(), image.getExt(), imagePath);
+            String filename = Base64.convert(image.getBase64(), image.getExt(), imagePath);
             User uploader = userDAO.getByDevice(image.getDeviceId());
             List<User> downloader = userDAO.getBySecret(uploader.getSecret());
             List<String> devices = new ArrayList<>();
             Uploaded uploaded = new Uploaded();
-            uploaded.setPath(path);
+            uploaded.setPath(imageUrl+"/"+filename);
             for (User user : downloader){
                 if (isValid(user, uploader)){
                     devices.add(user.getDeviceId());

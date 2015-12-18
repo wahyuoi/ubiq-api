@@ -23,8 +23,9 @@ public class Base64 {
         ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
         bufferedImage = ImageIO.read(bis);
         bis.close();
-        String name = imagePath +"/"+ System.currentTimeMillis()+"."+ext;
-        File file = new File(name);
+        String name = System.currentTimeMillis()+"."+ext;
+        String path = imagePath +"/"+ name;
+        File file = new File(path);
         ImageIO.write(bufferedImage, ext, file);
         return name;
     }

@@ -12,5 +12,7 @@ allowedGrantTypes:
 
 bearerRealm: oauth2-provider
 
-imagePath: /home/wahyuoi/temp2
+imagePath: /home/wahyuoi/Projects/nginx/html/images
+
+imageUrl: localhost/images
 
