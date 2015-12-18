@@ -1,6 +1,6 @@
 Ubiq-API
 ========
-Base URL : --
+Base URL : 128.199.103.223:8080
 
 1. Register User
 ----
