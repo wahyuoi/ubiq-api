@@ -18,7 +18,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by wahyuoi on 12/17/15.
@@ -44,16 +46,19 @@ public class UploadResource {
         try {
             String filename = Base64.convert(image.getBase64(), image.getExt(), imagePath);
             User uploader = userDAO.getByDevice(image.getDeviceId());
-            List<User> downloader = userDAO.getBySecret(uploader.getSecret());
+            List<User> dn = userDAO.getBySecret(uploader.getSecret());
+            Set<User> downloader = new HashSet<>(0);
+            downloader.addAll(dn);
             List<String> devices = new ArrayList<>();
-            Uploaded uploaded = new Uploaded();
-            uploaded.setPath(imageUrl+"/"+filename);
+            for (User d : downloader)
+                System.err.println(d.getDeviceId() + " -- " + d.getId());
             for (User user : downloader){
                 if (isValid(user, uploader)){
                     devices.add(user.getDeviceId());
-                    user.getUploadedList().add(uploaded);
+                    Uploaded uploaded = new Uploaded();
+                    uploaded.setPath(imageUrl + "/" + filename);
                     uploaded.setUser(user);
-                    userDAO.upsert(user);
+                    uploadDAO.upsert(uploaded);
                 }
             }
             return Response.status(Response.Status.CREATED).build();
@@ -65,7 +70,8 @@ public class UploadResource {
     }
 
     private boolean isValid(User user, User uploader) {
-        // todo check secret && check radius
+        if (!user.getSecret().equals(uploader.getSecret()))
+            return false;
         return true;
     }
 

@@ -31,6 +31,6 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     public List<User> getBySecret(String secret) {
-        return list(criteria().add(Restrictions.eq("secret", secret)));
+        return list(criteria().add(Restrictions.like("secret", secret)));
     }
 }

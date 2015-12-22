@@ -1,5 +1,6 @@
 package com.share.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -13,8 +14,9 @@ public class Uploaded {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
+    @JsonIgnore
     User user;
     @JsonProperty
     @Column(name = "path")

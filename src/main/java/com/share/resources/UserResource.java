@@ -6,10 +6,7 @@ import com.share.dao.UserDAO;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.hibernate.SessionFactory;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -31,5 +28,14 @@ public class UserResource {
     public Response doRegister(User user){
         user = userDAO.upsert(user);
         return Response.status(Response.Status.CREATED).entity(user).build();
+    }
+
+    @GET
+    @Timed
+    @UnitOfWork
+    @Path("/download/{deviceId}")
+    public Response doDownload(@PathParam("deviceId") String deviceId){
+        User user = userDAO.getByDevice(deviceId);
+        return Response.ok(user.getUploadedList()).build();
     }
 }
