@@ -1,6 +1,7 @@
 package com.share.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.share.core.User;
 import com.share.dao.UserDAO;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -26,7 +27,8 @@ public class UserResource {
     @UnitOfWork
     @Path("/register")
     public Response doRegister(User user){
-        user = userDAO.upsert(user);
+        if (userDAO.getByDevice(user.getDeviceId()) == null)
+            user = userDAO.upsert(user);
         return Response.status(Response.Status.CREATED).entity(user).build();
     }
 

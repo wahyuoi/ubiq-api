@@ -50,8 +50,6 @@ public class UploadResource {
             Set<User> downloader = new HashSet<>(0);
             downloader.addAll(dn);
             List<String> devices = new ArrayList<>();
-            for (User d : downloader)
-                System.err.println(d.getDeviceId() + " -- " + d.getId());
             for (User user : downloader){
                 if (isValid(user, uploader)){
                     devices.add(user.getDeviceId());
@@ -72,6 +70,7 @@ public class UploadResource {
     private boolean isValid(User user, User uploader) {
         if (!user.getSecret().equals(uploader.getSecret()))
             return false;
+        // todo check radius
         return true;
     }
 

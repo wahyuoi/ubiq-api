@@ -44,4 +44,7 @@
     <changeSet id="6" author="wahyuoi">
         <addUniqueConstraint tableName="image" columnNames="id_user, path"/>
     </changeSet>
+    <changeSet id="7" author="wahyuoi">
+        <addUniqueConstraint tableName="user" columnNames="device_id" />
+    </changeSet>
 </databaseChangeLog>
