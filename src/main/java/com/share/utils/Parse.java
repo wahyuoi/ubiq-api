@@ -51,9 +51,12 @@ public class Parse {
         WebResource webResource = client.resource(notifUrl);
 
         JSONObject jsonObject = new JSONObject();
+        JSONObject jsonData = new JSONObject();
         JSONArray jsonArray = new JSONArray();
+        jsonData.put("alert", "Gambar diterima");
         jsonArray.addAll(devices);
         jsonObject.put("channels", jsonArray);
+        jsonObject.put("data", jsonData);
 
         String input = JSONObject.toJSONString(jsonObject);
         System.err.println(input);
