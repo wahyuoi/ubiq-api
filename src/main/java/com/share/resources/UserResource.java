@@ -36,6 +36,11 @@ public class UserResource {
         if (userDAO.getByDevice(user.getDeviceId()) == null) {
             user = userDAO.upsert(user);
             Parse.register(user, parseAppId, parseRestApi);
+        } else {
+            String secret = user.getSecret();
+            user = userDAO.getByDevice(user.getDeviceId());
+            user.setSecret(secret);
+            userDAO.upsert(user);
         }
         return Response.status(Response.Status.CREATED).entity(user).build();
     }
