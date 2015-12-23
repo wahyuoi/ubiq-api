@@ -46,6 +46,8 @@ public class UploadResource {
         try {
             String filename = Base64.convert(image.getBase64(), image.getExt(), imagePath);
             User uploader = userDAO.getByDevice(image.getDeviceId());
+            if (uploader == null)
+            	return Response.status(Response.Status.NOT_FOUND).build();
             List<User> dn = userDAO.getBySecret(uploader.getSecret());
             Set<User> downloader = new HashSet<>(0);
             downloader.addAll(dn);
