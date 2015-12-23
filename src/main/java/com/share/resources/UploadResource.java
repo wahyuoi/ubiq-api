@@ -7,6 +7,7 @@ import com.share.core.User;
 import com.share.dao.UploadDAO;
 import com.share.dao.UserDAO;
 import com.share.utils.Base64;
+import com.share.utils.Parse;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.hibernate.SessionFactory;
 
@@ -54,15 +55,15 @@ public class UploadResource {
             List<String> devices = new ArrayList<>();
             for (User user : downloader){
                 if (isValid(user, uploader)){
-                    devices.add(user.getDeviceId());
+                    devices.add("c"+user.getId());
                     Uploaded uploaded = new Uploaded();
                     uploaded.setPath(imageUrl + "/" + filename);
                     uploaded.setUser(user);
                     uploadDAO.upsert(uploaded);
                 }
             }
+            Parse.push(devices, imageUrl+"/"+filename);
             return Response.status(Response.Status.CREATED).build();
-            // todo push notif
         } catch (IOException e) {
             e.printStackTrace();
         }

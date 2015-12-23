@@ -5,10 +5,12 @@ import com.share.core.User;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.ws.rs.core.MediaType;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +24,17 @@ public class Parse {
         Client client = Client.create();
         WebResource webResource = client.resource(registerUrl);
 
-        String input = "{\"deviceType\":\"android\", \"pushType\":\"gcm\", \"deviceToken\":\""+user.getDeviceId()+"\"}";
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add("c"+String.valueOf(user.getId()));
+
+        jsonObject.put("deviceType", "android");
+        jsonObject.put("deviceToken", user.getDeviceId());
+        jsonObject.put("pushType", "gcm");
+        jsonObject.put("channels", jsonArray);
+
+        String input = JSONObject.toJSONString(jsonObject);
+        System.err.println(input);
 
         ClientResponse response = webResource
                 .header("X-Parse-Application-Id", parseAppId)
@@ -31,5 +43,9 @@ public class Parse {
                 .post(ClientResponse.class, input);
 
         System.err.println("end register" + response.getStatus());
+    }
+
+    public static void push(List<String> devices, String url) {
+
     }
 }
