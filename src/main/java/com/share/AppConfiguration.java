@@ -3,10 +3,12 @@ package com.share;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
 import io.dropwizard.Configuration;
+import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by wahyuoi on 9/3/15.
@@ -43,5 +45,25 @@ public class AppConfiguration extends Configuration {
     private String imageUrl;
     public String getImageUrl(){
         return imageUrl;
+    }
+
+    @Valid
+    @NotNull
+    @JsonProperty
+    private JerseyClientConfiguration httpClient = new JerseyClientConfiguration();
+    public JerseyClientConfiguration getHttpClient(){
+        return httpClient;
+    }
+
+    @JsonProperty
+    private String parseAppId;
+    public String getParseAppId(){
+        return parseAppId;
+    }
+
+    @JsonProperty
+    private String parseRestApi;
+    public String getParseRestApi(){
+        return parseRestApi;
     }
 }

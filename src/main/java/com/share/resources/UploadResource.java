@@ -32,7 +32,7 @@ public class UploadResource {
     private final String imageUrl;
     private final UserDAO userDAO;
     private final UploadDAO uploadDAO;
-    public UploadResource(SessionFactory sessionFactory, String imagePath, String imageUrl) {
+    public UploadResource(SessionFactory sessionFactory, String imagePath, String imageUrl, String parseAppId, String parseRestApi) {
         this.imagePath = imagePath;
         this.imageUrl = imageUrl;
         userDAO = new UserDAO(sessionFactory);

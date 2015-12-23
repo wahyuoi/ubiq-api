@@ -16,3 +16,6 @@ imagePath: /home/wahyuoi/Projects/nginx/html/images
 
 imageUrl: localhost/images
 
+parseRestApi: asd
+
+parseAppId: asd

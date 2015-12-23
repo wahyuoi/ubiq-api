@@ -4,6 +4,8 @@ import com.codahale.metrics.annotation.Timed;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.share.core.User;
 import com.share.dao.UserDAO;
+import com.share.utils.Parse;
+import com.sun.jersey.api.client.Client;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.hibernate.SessionFactory;
 
@@ -18,8 +20,12 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
     private final UserDAO userDAO;
-    public UserResource(SessionFactory sessionFactory) {
+    private final String parseAppId;
+    private final String parseRestApi;
+    public UserResource(SessionFactory sessionFactory, String parseAppId, String parseRestApi) {
         userDAO = new UserDAO(sessionFactory);
+        this.parseAppId = parseAppId;
+        this.parseRestApi = parseRestApi;
     }
 
     @POST
@@ -27,8 +33,10 @@ public class UserResource {
     @UnitOfWork
     @Path("/register")
     public Response doRegister(User user){
-        if (userDAO.getByDevice(user.getDeviceId()) == null)
+        if (userDAO.getByDevice(user.getDeviceId()) == null) {
             user = userDAO.upsert(user);
+            Parse.register(user, parseAppId, parseRestApi);
+        }
         return Response.status(Response.Status.CREATED).entity(user).build();
     }
 

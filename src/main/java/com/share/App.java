@@ -3,8 +3,10 @@ package com.share;
 import com.share.core.Uploaded;
 import com.share.core.User;
 import com.share.resources.*;
+import com.sun.jersey.api.client.Client;
 import io.dropwizard.Application;
 
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.jdbi.DBIFactory;
@@ -54,9 +56,13 @@ public class App extends Application<AppConfiguration>
         LOGGER.info("Method App#run() called, starting application");
 
         SessionFactory hibernateSessionFactory = hibernate.getSessionFactory();
-
+        Client client = new JerseyClientBuilder(environment).using(appConfiguration.getHttpClient()).build(getName());
+        client.setConnectTimeout(30000);
+        client.setReadTimeout(30000);
+        String parseAppId = appConfiguration.getParseAppId();
+        String parseRestApi = appConfiguration.getParseRestApi();
         // add resource to env
-        environment.jersey().register(new UploadResource(hibernateSessionFactory, appConfiguration.getImagePath(), appConfiguration.getImageUrl()));
-        environment.jersey().register(new UserResource(hibernateSessionFactory));
+        environment.jersey().register(new UploadResource(hibernateSessionFactory, appConfiguration.getImagePath(), appConfiguration.getImageUrl(), parseAppId, parseRestApi));
+        environment.jersey().register(new UserResource(hibernateSessionFactory, parseAppId, parseRestApi));
     }
 }
