@@ -45,7 +45,25 @@ public class Parse {
         System.err.println("end register" + response.getStatus());
     }
 
-    public static void push(List<String> devices, String url) {
+    public static void push(List<String> devices, String url, String parseAppId, String parseRestApi) {
+        System.err.println("do push " + parseAppId + " " + parseRestApi);
+        Client client = Client.create();
+        WebResource webResource = client.resource(notifUrl);
 
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.addAll(devices);
+        jsonObject.put("channels", jsonArray);
+
+        String input = JSONObject.toJSONString(jsonObject);
+        System.err.println(input);
+
+        ClientResponse response = webResource
+                .header("X-Parse-Application-Id", parseAppId)
+                .header("X-Parse-REST-API-Key", parseRestApi)
+                .type("application/json")
+                .post(ClientResponse.class, input);
+
+        System.err.println("end push" + response.getStatus());
     }
 }

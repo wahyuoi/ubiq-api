@@ -33,11 +33,15 @@ public class UploadResource {
     private final String imageUrl;
     private final UserDAO userDAO;
     private final UploadDAO uploadDAO;
+    private final String parseAppId;
+    private final String parseRestApi;
     public UploadResource(SessionFactory sessionFactory, String imagePath, String imageUrl, String parseAppId, String parseRestApi) {
         this.imagePath = imagePath;
         this.imageUrl = imageUrl;
         userDAO = new UserDAO(sessionFactory);
         uploadDAO = new UploadDAO(sessionFactory);
+        this.parseAppId = parseAppId;
+        this.parseRestApi = parseRestApi;
     }
 
     @POST
@@ -62,7 +66,7 @@ public class UploadResource {
                     uploadDAO.upsert(uploaded);
                 }
             }
-            Parse.push(devices, imageUrl+"/"+filename);
+            Parse.push(devices, imageUrl+"/"+filename, parseAppId, parseRestApi);
             return Response.status(Response.Status.CREATED).build();
         } catch (IOException e) {
             e.printStackTrace();
