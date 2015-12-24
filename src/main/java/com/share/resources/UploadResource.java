@@ -7,6 +7,7 @@ import com.share.core.User;
 import com.share.dao.UploadDAO;
 import com.share.dao.UserDAO;
 import com.share.utils.Base64;
+import com.share.utils.Location;
 import com.share.utils.Parse;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.hibernate.SessionFactory;
@@ -77,8 +78,8 @@ public class UploadResource {
     private boolean isValid(User user, User uploader) {
         if (!user.getSecret().equals(uploader.getSecret()))
             return false;
-        // todo check radius
-        return true;
+        boolean isValid = Location.inRange(user.getLon(), user.getLat(), uploader.getLon(), uploader.getLat()) || true;
+        return isValid;
     }
 
 }
